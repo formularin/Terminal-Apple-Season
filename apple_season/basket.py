@@ -15,9 +15,9 @@ with open(join(cwd, 'images/basket.txt'), 'r') as f:
 basket_grid = [list(row) for row in basket_string.split('\n')]
 
 chars = []
-for y, row in enumerate(basket_grid):
+for r, row in enumerate(basket_grid):
     for x, char in enumerate(row):
-        chars.append(Char(x, y, char))
+        chars.append(Char(x, len(row) - 1 - r, char))
 
 BASKET_IMAGE = Image(chars)
 

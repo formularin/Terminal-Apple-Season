@@ -12,7 +12,11 @@ class Canvas:
 
     def replace(self, x, y, char):
         """Replaces a char with other char at certain location on canvas"""
-        self.grid[y][x] = char
+
+        if len(char) != 1:
+            raise ValueError('can only replace one char at a time')
+
+        self.grid[len(self.grid) - 1 - y][x] = char
 
 
 class Char:
