@@ -3,9 +3,7 @@ class Canvas:
 
     def __init__(self, width, height):
         
-        self.width = width
-        self.height = height
-        self.grid = [[' ' for x in width] for y in height]
+        self.grid = [[' ' for x in range(width)] for y in range(height)]
         
     @property
     def display(self):

@@ -30,6 +30,9 @@ class Basket(Coords):
 
     def move(self, direction):
         
+        self.previous_x = self.x
+        self.previous_y = self.y
+
         if direction == "right":
             self.x += 1
 
