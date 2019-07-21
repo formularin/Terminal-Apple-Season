@@ -17,7 +17,7 @@ basket_grid = [list(row) for row in basket_string.split('\n')]
 chars = []
 for r, row in enumerate(basket_grid):
     for x, char in enumerate(row):
-        chars.append(Char(x, len(row) - 1 - r, char))
+        chars.append(Char(x, len(basket_grid) - 1 - r, char))
 
 BASKET_IMAGE = Image(chars)
 

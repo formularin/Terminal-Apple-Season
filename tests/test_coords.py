@@ -17,7 +17,7 @@ apple_grid = [list(row) for row in apple_string.split('\n')]
 chars = []
 for r, row in enumerate(apple_grid):
     for x, char in enumerate(row):
-        chars.append(coords.Char(x, len(row) - 1 - r, char))
+        chars.append(coords.Char(x, len(apple_grid) - 1 - r, char))
 
 apple_image = coords.Image(chars)
 

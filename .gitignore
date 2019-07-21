@@ -3,3 +3,5 @@ venv
 apple_season/__pycache__
 test_curses.py
 test.log
+lines.py
+basket
