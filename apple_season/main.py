@@ -1,17 +1,19 @@
 from os.path import join, dirname
 import sys
+import time
 
 cwd = dirname(dirname(__file__))
 if cwd not in sys.path:
     sys.path.append(cwd)
 
 from curses import wrapper
+from _curses import error as CursesError
 
 from apple_season.basket import Basket
 from apple_season.coords import Canvas
 
 
-canvas = Canvas(50, 50)
+canvas = Canvas(100, 25)
 basket = Basket(canvas)
 
 
@@ -22,16 +24,13 @@ def main(stdscr):
     stdscr.clear()
 
     while True:
+
         try:
-            basket.render()
             key = stdscr.getkey()
-            stdscr.clear()
-            stdscr.addstr(canvas.display)
-            stdscr.refresh()
 
             # quit option
             if str(key) == "q":
-               break
+                break
 
             # right arrow
             elif str(key) == "KEY_RIGHT":
@@ -40,11 +39,14 @@ def main(stdscr):
             # left arrow
             elif str(key) == "KEY_LEFT":
                 basket.move('left')
-
-        except Exception as e:
             
-            with open('test.log', 'a') as f:
-                f.write(f'\n{e}')
+            basket.render()
+            stdscr.clear()
+            stdscr.addstr(canvas.display)
+            stdscr.refresh()
+
+        except Exception:
+            pass
 
 if __name__ == "__main__":
     wrapper(main)

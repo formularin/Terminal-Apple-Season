@@ -68,4 +68,7 @@ class Coords:
             canvas_x = char.x + self.x
             canvas_y = char.y + self.y
 
-            self.canvas.replace(canvas_x, canvas_y, char.char)
+            try:
+                self.canvas.replace(canvas_x, canvas_y, char.char)
+            except IndexError:
+                pass
