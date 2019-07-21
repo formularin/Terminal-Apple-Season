@@ -19,14 +19,14 @@ for r, row in enumerate(basket_grid):
     for x, char in enumerate(row):
         chars.append(Char(x, len(basket_grid) - 1 - r, char))
 
-BASKET_IMAGE = Image(chars)
+basket_image = Image(chars)
 
 
 class Basket(Coords):
 
     def __init__(self, canvas):
         
-        Coords.__init__(self, 1, 0, BASKET_IMAGE, canvas)
+        Coords.__init__(self, 1, 0, basket_image, canvas)
 
 
     def move(self, direction):
