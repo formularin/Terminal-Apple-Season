@@ -6,18 +6,18 @@ cwd = dirname(dirname(__file__))
 if cwd not in sys.path:
     sys.path.append(cwd)
 
-from curses import wrapper
-from _curses import error as CursesError
+import curses
 
 from apple_season.basket import Basket
 from apple_season.coords import Canvas
 
 
-canvas = Canvas(100, 25)
-basket = Basket(canvas)
-
-
 def main(stdscr):
+
+    curses.curs_set(0)
+
+    canvas = Canvas(curses.COLS - 1, curses.LINES - 1)  # pylint: disable=no-member
+    basket = Basket(canvas)
 
     stdscr.nodelay(True)
     key=""
@@ -49,4 +49,4 @@ def main(stdscr):
             pass
 
 if __name__ == "__main__":
-    wrapper(main)
+    curses.wrapper(main)

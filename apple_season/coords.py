@@ -2,8 +2,15 @@ class Canvas:
     """Canvas for displaying coords objects"""
 
     def __init__(self, width, height):
+
+        self.width = width
+        self.height = height
         
-        self.grid = [[' ' for x in range(width)] for y in range(height)]
+        self.grid = [[' ' for x in range(self.width)] for y in range(self.height)]
+        self.grid[0] = ['-' for x in range(self.width)]
+        for r in range(len(self.grid)):
+            self.grid[r][0] = '|'
+            self.grid[r][-1] = '|'
         
     @property
     def display(self):
