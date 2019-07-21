@@ -7,10 +7,6 @@ class Canvas:
         self.height = height
         
         self.grid = [[' ' for x in range(self.width)] for y in range(self.height)]
-        self.grid[0] = ['-' for x in range(self.width)]
-        for r in range(len(self.grid)):
-            self.grid[r][0] = '|'
-            self.grid[r][-1] = '|'
         
     @property
     def display(self):
@@ -66,7 +62,10 @@ class Coords:
             canvas_x = char.x + self.previous_x
             canvas_y = char.y + self.previous_y
 
-            self.canvas.replace(canvas_x, canvas_y, ' ')
+            try:
+                self.canvas.replace(canvas_x, canvas_y, ' ')
+            except IndexError:
+                pass
         
         # add new rendering on canvas
         for char in self.image.chars:

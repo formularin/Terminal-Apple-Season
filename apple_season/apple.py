@@ -1,6 +1,7 @@
 from os.path import join, dirname
 import sys
 import random
+import logging
 
 cwd = dirname(dirname(__file__))
 
@@ -8,6 +9,10 @@ if cwd not in sys.path:
     sys.path.append(cwd)
 
 from apple_season.coords import Coords, Image, Char
+
+
+logging.basicConfig(filename='apple.log', level=logging.DEBUG,
+                    format='%(asctime)s: %(levelname)s: %(message)s')
 
 
 with open(join(cwd, 'images/apple.txt'), 'r') as f:
@@ -25,21 +30,30 @@ apple_image = Image(chars)
 
 class Apple(Coords):
 
-    def fall(self):
-
-        while self.y > 0:
-            self.previous_y = self.y
-            self.y -= 2
-
-        self.image = '   \n   \n   '
-
     def __init__(self, canvas):
 
         y = canvas.height
-        x = random.randint(0, canvas.width)
+        x = random.randint(1, canvas.width - 4)
+
+        self.has_fallen = False
 
         Coords.__init__(self, x, y, apple_image, canvas)
 
-        self.fall()
+        logging.debug(f'Apple Created at coords ({self.x}, {self.y})')
+
+    def fall(self):
+
+        self.previous_y = self.y
+        self.y -= 1
+
+        if self.y <= 0:
+            new_grid = [[' ' for i in range(3)] for x in range(3)]
+            new_image_chars = []
+            for r, row in enumerate(new_grid):
+                for x, char in enumerate(row):
+                    new_image_chars.append(Char(x, len(new_grid) - 1 - r, char))
+            self.image = Image(new_image_chars)
+            self.has_fallen = True
+            logging.debug(f'Apple has fallen at coords ({self.x}, {self.y})')
 
 

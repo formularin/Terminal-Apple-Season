@@ -25,8 +25,8 @@ basket_image = Image(chars)
 class Basket(Coords):
 
     def __init__(self, canvas):
-        
-        Coords.__init__(self, 1, 0, basket_image, canvas)
+
+        Coords.__init__(self, int(canvas.width / 2), 1, basket_image, canvas)
 
 
     def move(self, direction):
