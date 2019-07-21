@@ -35,7 +35,7 @@ class Basket(Coords):
         self.previous_y = self.y
 
         if direction == "right":
-            self.x += 1
+            self.x += 5
 
         elif direction == "left":
-            self.x -= 1
+            self.x -= 5
