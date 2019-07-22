@@ -30,16 +30,30 @@ apple_image = Image(chars)
 
 class Apple(Coords):
 
-    def __init__(self, canvas):
+    def __init__(self, canvas, basket):
+
+        self.basket = basket
 
         y = canvas.height
         x = random.randint(1, canvas.width - 4)
 
         self.has_fallen = False
+        self.caught = False
 
         Coords.__init__(self, x, y, apple_image, canvas)
 
         logging.debug(f'Apple Created at coords ({self.x}, {self.y})')
+
+    def end(self):
+
+        new_grid = [[' ' for i in range(3)] for x in range(3)]
+        new_image_chars = []
+        for r, row in enumerate(new_grid):
+            for x, char in enumerate(row):
+                new_image_chars.append(Char(x, len(new_grid) - 1 - r, char))
+        self.image = Image(new_image_chars)
+        self.has_fallen = True
+        logging.debug(f'Apple has fallen at coords ({self.x}, {self.y})')
 
     def fall(self):
 
@@ -47,13 +61,22 @@ class Apple(Coords):
         self.y -= 1
 
         if self.y <= 0:
-            new_grid = [[' ' for i in range(3)] for x in range(3)]
-            new_image_chars = []
-            for r, row in enumerate(new_grid):
-                for x, char in enumerate(row):
-                    new_image_chars.append(Char(x, len(new_grid) - 1 - r, char))
-            self.image = Image(new_image_chars)
-            self.has_fallen = True
-            logging.debug(f'Apple has fallen at coords ({self.x}, {self.y})')
+            self.end()
 
+    def check_caught(self):
 
+        basket_char_coords = set(
+            [(char.x + self.basket.x, char.y + self.basket.y) 
+            for char in self.basket.image.chars])
+        self_char_coords = set(
+            [(char.x + self.x, char.y + self.y) 
+            for char in self.image.chars])
+
+        overlapping = bool(basket_char_coords & self_char_coords != set())
+
+        if overlapping:
+            logging.info(f'basket coords: {basket_char_coords}')
+            logging.info(f'apple_coords: {self_char_coords}')
+            logging.info(f'apple caught with overlap coords: ({basket_char_coords & self_char_coords})')
+            self.caught = True
+            self.end()

@@ -22,6 +22,25 @@ with open(f'{cwd}/images/title.txt', 'r') as f:
     title_screen = f.read()
 
 
+def game_over(stdscr, caught_apples):
+
+    missed_apples = 100 - caught_apples
+
+    while True:
+        stdscr.clear()
+        stdscr.addstr(f'GAME OVER\nTotal: 100\nMissed: {missed_apples}\n__________\n\
+Saves: {caught_apples}\n\n\nPress "q" to quit\nPress "a" to play again.')
+        try:
+            key = stdscr.getkey()
+            if str(key) == "q":
+                break
+            if str(key) == "a":
+                curses.wrapper(main)
+                return
+        except Exception:
+            pass
+
+
 def main(stdscr):
 
     curses.curs_set(0)
@@ -71,10 +90,10 @@ and start again in larger window.')
     while not finished_apples():
 
         if len(apples) <= 100:  # don't make more if there are already 100
-            # decide whether or not to create new apple (1/100 chance per frame)
-            num = random.randint(0, 100)
+            # decide whether or not to create new apple (1/50 chance per frame)
+            num = random.randint(0, 50)
             if num == 25:
-                apples.append(Apple(canvas))
+                apples.append(Apple(canvas, basket))
 
         stdscr.clear()
 
@@ -84,7 +103,7 @@ and start again in larger window.')
             # pick up keyboard inputs
             # quit option
             if str(key) == "q":
-                break
+                return
 
             # right arrow
             elif str(key) == "KEY_RIGHT":
@@ -102,6 +121,7 @@ and start again in larger window.')
                 apple.render()
             else:
                 if '.0' not in str(i / 2):  # check if i is even (drop every other frame)
+                    apple.check_caught()
                     apple.fall()
                     apple.render()
 
@@ -117,6 +137,12 @@ and start again in larger window.')
         stdscr.refresh()
         i += 1
         time.sleep(0.01)
+
+    caught_apples = len([apple for apple in apples if not apple.caught])
+
+    curses.wrapper(game_over, caught_apples)
+    return
+
 
 if __name__ == "__main__":
     curses.wrapper(main)
