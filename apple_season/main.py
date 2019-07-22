@@ -3,7 +3,6 @@ import sys
 import random
 import time
 import curses
-import logging
 
 cwd = dirname(dirname(abspath(__file__)))
 if cwd not in sys.path:
@@ -12,10 +11,6 @@ if cwd not in sys.path:
 from apple_season.basket import Basket
 from apple_season.apple import Apple
 from apple_season.coords import Canvas
-
-
-logging.basicConfig(filename='apple.log', level=logging.DEBUG,
-                    format='%(asctime)s: %(levelname)s: %(message)s')
 
 
 title_screen = """     ___      _____    _____            _______
@@ -63,7 +58,6 @@ def main(stdscr):
 
     curses.curs_set(0)
     dims = [curses.COLS - 1, curses.LINES - 1]  # pylint: disable=no-member
-    logging.info(f'terminal dims - width: {curses.COLS - 1} and height: {curses.LINES - 1}')  # pylint: disable=no-member
 
     stdscr.nodelay(True)
     stdscr.leaveok(True)
@@ -88,9 +82,6 @@ and start again in larger window.')
             pass
 
     canvas = Canvas(*dims)
-
-    logging.debug(f'canvas created with width: {canvas.width} and height: {canvas.height}')
-
     basket = Basket(canvas)
 
     apples = []
@@ -150,7 +141,7 @@ and start again in larger window.')
             stdscr.addstr(canvas.display)
             
         except Exception:
-            logging.error(f'cursor position: {str(stdscr.getyx())}')
+            pass
 
         stdscr.refresh()
         i += 1

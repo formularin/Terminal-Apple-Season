@@ -1,7 +1,6 @@
 from os.path import join, dirname
 import sys
 import random
-import logging
 
 cwd = dirname(dirname(__file__))
 
@@ -10,9 +9,6 @@ if cwd not in sys.path:
 
 from apple_season.coords import Coords, Image, Char
 
-
-logging.basicConfig(filename='apple.log', level=logging.DEBUG,
-                    format='%(asctime)s: %(levelname)s: %(message)s')
 
 apple_string = """  /
 / \\
@@ -42,7 +38,6 @@ class Apple(Coords):
 
         Coords.__init__(self, x, y, apple_image, canvas)
 
-        logging.debug(f'Apple Created at coords ({self.x}, {self.y})')
 
     def end(self):
 
@@ -53,7 +48,6 @@ class Apple(Coords):
                 new_image_chars.append(Char(x, len(new_grid) - 1 - r, char))
         self.image = Image(new_image_chars)
         self.has_fallen = True
-        logging.debug(f'Apple has fallen at coords ({self.x}, {self.y})')
 
     def fall(self):
 
@@ -75,8 +69,5 @@ class Apple(Coords):
         overlapping = bool(basket_char_coords & self_char_coords != set())
 
         if overlapping:
-            logging.info(f'basket coords: {basket_char_coords}')
-            logging.info(f'apple_coords: {self_char_coords}')
-            logging.info(f'apple caught with overlap coords: ({basket_char_coords & self_char_coords})')
             self.caught = True
             self.end()
