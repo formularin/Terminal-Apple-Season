@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="Terminal-Apple-Season",
-    version="0.0.8",
+    version="1.0.0",
     author="Arin Khare",
     author_email="arinmkhare@gmail.com",
     description="Apple season game for terminal",
