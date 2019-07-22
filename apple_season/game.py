@@ -147,11 +147,10 @@ and start again in larger window.')
         i += 1
         time.sleep(0.01)
 
-    caught_apples = len([apple for apple in apples if not apple.caught])
+    caught_apples = len([apple for apple in apples if apple.caught])
 
     curses.wrapper(game_over, caught_apples)
     return
 
 
-if __name__ == "__main__":
-    curses.wrapper(main)
+curses.wrapper(main)
