@@ -18,8 +18,26 @@ logging.basicConfig(filename='apple.log', level=logging.DEBUG,
                     format='%(asctime)s: %(levelname)s: %(message)s')
 
 
-with open(f'{cwd}/images/title.txt', 'r') as f:
-    title_screen = f.read()
+title_screen = """     ___      _____    _____            _______
+    /   \    |     |  |     | |        |
+   /_____\   |_____|  |_____| |        |____
+  /       \  |        |       |        |
+ /         \ |        |       |_______ |_______
+ ____   ______     ___     _____   _____
+|      |          /   \   |       |     | |\   |
+|____  |____     /_____\  |_____  |     | | \  |
+     | |        /       \       | |     | |  \ |
+_____| |______ /         \ _____| |_____| |   \|
+
+           ___        ______                               
+           \  \      /     /                       
+            \__\____/     / Press any key to start.
+               /   /_____/  If nothing happens, raise an issue on     
+              | O        |  https://github.com/lol-cubes/Terminal-Apple-Season/issues
+              |          |
+              |          |       
+               \________/                         
+                                                  """
 
 
 def game_over(stdscr, caught_apples):

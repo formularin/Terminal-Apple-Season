@@ -14,9 +14,9 @@ from apple_season.coords import Coords, Image, Char
 logging.basicConfig(filename='apple.log', level=logging.DEBUG,
                     format='%(asctime)s: %(levelname)s: %(message)s')
 
-
-with open(join(cwd, 'images/apple.txt'), 'r') as f:
-    apple_string = f.read()
+apple_string = """  /
+/ \\
+\_/"""
 
 apple_grid = [list(row) for row in apple_string.split('\n')]
 

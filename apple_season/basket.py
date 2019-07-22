@@ -9,8 +9,10 @@ if cwd not in sys.path:
 from apple_season.coords import Coords, Image, Char
 
 
-with open(join(cwd, 'images/basket.txt'), 'r') as f:
-    basket_string = f.read()
+basket_string = """\------------------/
+ \                /
+  \              /
+   \____________/"""
 
 basket_grid = [list(row) for row in basket_string.split('\n')]
 
