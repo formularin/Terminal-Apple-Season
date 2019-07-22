@@ -1,11 +1,11 @@
-from os.path import join, dirname
+from os.path import join, dirname, abspath
 import sys
 import random
 import time
 import curses
 import logging
 
-cwd = dirname(dirname(__file__))
+cwd = dirname(dirname(abspath(__file__)))
 if cwd not in sys.path:
     sys.path.append(cwd)
 
@@ -18,6 +18,10 @@ logging.basicConfig(filename='apple.log', level=logging.DEBUG,
                     format='%(asctime)s: %(levelname)s: %(message)s')
 
 
+with open(f'{cwd}/images/title.txt', 'r') as f:
+    title_screen = f.read()
+
+
 def main(stdscr):
 
     curses.curs_set(0)
@@ -28,6 +32,23 @@ def main(stdscr):
     stdscr.leaveok(True)
     key=""
     stdscr.clear()
+
+    while True:
+        stdscr.clear()
+        try:
+            stdscr.addstr(title_screen)
+        except Exception:
+            stdscr.clear()
+            stdscr.addstr('Terminal window is too small. \n\
+Quit the program by pressing "q" \n\
+and start again in larger window.')
+        try:
+            key = stdscr.getkey()
+            if str(key) == "q":
+                sys.exit()
+            break
+        except Exception:
+            pass
 
     canvas = Canvas(*dims)
 
@@ -48,8 +69,6 @@ def main(stdscr):
          return True
 
     while not finished_apples():
-
-
 
         if len(apples) <= 100:  # don't make more if there are already 100
             # decide whether or not to create new apple (1/100 chance per frame)
