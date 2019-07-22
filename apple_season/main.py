@@ -20,7 +20,7 @@ logging.basicConfig(filename='apple.log', level=logging.DEBUG,
 
 def main(stdscr):
 
-    curses.curs_set(1)  # so i can see where the cursor is
+    curses.curs_set(0)
     dims = [curses.COLS - 1, curses.LINES - 1]  # pylint: disable=no-member
     logging.info(f'terminal dims - width: {curses.COLS - 1} and height: {curses.LINES - 1}')  # pylint: disable=no-member
 
@@ -49,7 +49,7 @@ def main(stdscr):
 
     while not finished_apples():
 
-        
+
 
         if len(apples) <= 100:  # don't make more if there are already 100
             # decide whether or not to create new apple (1/100 chance per frame)
@@ -57,9 +57,10 @@ def main(stdscr):
             if num == 25:
                 apples.append(Apple(canvas))
 
+        stdscr.clear()
+
         try:
             key = stdscr.getkey()
-            stdscr.clear()
             
             # pick up keyboard inputs
             # quit option
