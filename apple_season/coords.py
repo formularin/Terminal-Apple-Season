@@ -1,18 +1,6 @@
 class Canvas:
     """Canvas for displaying coords objects"""
 
-    def __init__(self, width, height):
-
-        self.width = width
-        self.height = height
-        
-        self.grid = [[' ' for x in range(self.width)] for y in range(self.height)]
-        
-    @property
-    def display(self):
-        """Returns string representation of current state"""
-        return '\n'.join([''.join(i) for i in self.grid])
-
     def replace(self, x, y, char):
         """Replaces a char with other char at certain location on canvas"""
 
@@ -20,6 +8,22 @@ class Canvas:
             raise ValueError('can only replace one char at a time')
 
         self.grid[len(self.grid) - 1 - y][x] = char
+
+    def __init__(self, width, height):
+
+        self.width = width
+        self.height = height
+        
+        self.grid = [[' ' for x in range(self.width)] for y in range(self.height)]
+
+        for i, char in enumerate(reversed('press "q" to quit'), 1):
+            self.replace(self.width - i, self.height - 1, char)
+
+        
+    @property
+    def display(self):
+        """Returns string representation of current state"""
+        return '\n'.join([''.join(i) for i in self.grid])
 
 
 class Char:

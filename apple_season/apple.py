@@ -31,7 +31,7 @@ class Apple(Coords):
         self.basket = basket
 
         y = canvas.height
-        x = random.randint(1, canvas.width - 4)
+        x = random.randint(1, canvas.width - 18)
 
         self.has_fallen = False
         self.caught = False
