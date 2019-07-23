@@ -3,14 +3,19 @@ import sys
 import random
 import time
 import curses
+import logging
 
 cwd = dirname(dirname(abspath(__file__)))
 if cwd not in sys.path:
     sys.path.append(cwd)
 
 from apple_season.basket import Basket
-from apple_season.apple import Apple
-from apple_season.coords import Canvas
+from apple_season.apple import Apple, apple_string
+from apple_season.coords import Canvas, Coords, Image
+
+
+# logging.basicConfig(filename='apple.log', level=logging.DEBUG,
+#                     format='%(asctime)s: %(levelname)s: %(message)s')
 
 
 title_screen = """     ___      _____    _____            _______
@@ -58,6 +63,10 @@ def main(stdscr):
 
     curses.curs_set(0)
     dims = [curses.COLS - 1, curses.LINES - 1]  # pylint: disable=no-member
+    # logging.info(f'terminal dims - width: {curses.COLS - 1} and height: {curses.LINES - 1}') # pylint: disable=no-member
+
+    # apple color pair
+    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_RED)
 
     stdscr.nodelay(True)
     stdscr.leaveok(True)
@@ -133,12 +142,24 @@ and start again in larger window.')
                     apple.check_caught()
                 apple.fall()
                 apple.render()
+                # attempt to make the apples red.
+                # for char in apple.image.chars:
+                #     char_x = char.x + apple.x
+                #     char_y = canvas.height - 1 - (char.y + apple.y)
+                #     logging.debug(f'x: {char_x}')
+                #     logging.debug(f'y: {char_y}')
+                #     try:
+                #         stdscr.addstr(char_y, char_x, char.char, curses.color_pair(1))
+                #     except Exception:
+                #         pass
                 
         # render objects
         basket.render()
 
         try:
             stdscr.addstr(canvas.display)
+            stdscr.addstr(f'\nsaved: {len([apple for apple in apples if apple.caught])}\
+\t\tmisssed: {len([apple for apple in apples if not apple.caught])}')
             
         except Exception:
             pass

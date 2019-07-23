@@ -7,7 +7,7 @@ class Canvas:
         if len(char) != 1:
             raise ValueError('can only replace one char at a time')
 
-        self.grid[len(self.grid) - 1 - y][x] = char
+        self.grid[self.height - 1 - y][x] = char
 
     def __init__(self, width, height):
 
