@@ -32,12 +32,24 @@ class Basket(Coords):
 
 
     def move(self, direction):
-        
+
         self.previous_x = self.x
         self.previous_y = self.y
 
         if direction == "right":
+
+            # quit function if off the right edge
+            for char in self.image.chars:
+                if char.x + self.x + 5 > self.canvas.width:
+                    return
+
             self.x += 5
 
         elif direction == "left":
+            
+            # quit function if off the left edge
+            for char in self.image.chars:
+                if char.x + self.x - 5 < 0:
+                    return
+
             self.x -= 5
