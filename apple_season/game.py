@@ -129,7 +129,8 @@ and start again in larger window.')
             if apple.has_fallen:
                 apple.render()
             else:
-                apple.check_caught()
+                if apple.y == basket.image.chars[0].y:
+                    apple.check_caught()
                 apple.fall()
                 apple.render()
                 

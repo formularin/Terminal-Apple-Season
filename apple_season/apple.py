@@ -59,13 +59,10 @@ class Apple(Coords):
             self.end()
 
     def check_caught(self):
-
-        basket_char_coords = set(
-            [(char.x + self.basket.x, char.y + self.basket.y) 
-            for char in self.basket.image.chars])
-        self_char_coords = set(
-            [(char.x + self.x, char.y + self.y) 
-            for char in self.image.chars])
+        
+        # x values for basket and apple
+        basket_char_coords = set([char.x + self.basket.x for char in self.basket.image.chars])
+        self_char_coords = set([char.x + self.x for char in self.image.chars])
 
         overlapping = bool(basket_char_coords & self_char_coords != set())
 
