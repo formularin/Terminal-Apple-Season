@@ -85,7 +85,7 @@ and start again in larger window.')
     basket = Basket(canvas)
 
     apples = []
-    i = 0
+    frame = 0
 
     def finished_apples():
       if len(apples) <= 100:
@@ -129,11 +129,10 @@ and start again in larger window.')
             if apple.has_fallen:
                 apple.render()
             else:
-                if '.0' not in str(i / 2):  # check if i is even (drop every other frame)
-                    apple.check_caught()
-                    apple.fall()
-                    apple.render()
-
+                apple.check_caught()
+                apple.fall()
+                apple.render()
+                
         # render objects
         basket.render()
 
@@ -144,8 +143,8 @@ and start again in larger window.')
             pass
 
         stdscr.refresh()
-        i += 1
-        time.sleep(0.01)
+        time.sleep(0.02)
+        frame += 1
 
     caught_apples = len([apple for apple in apples if apple.caught])
 

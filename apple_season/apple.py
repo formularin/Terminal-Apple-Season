@@ -35,6 +35,7 @@ class Apple(Coords):
 
         self.has_fallen = False
         self.caught = False
+        self.frame = 0
 
         Coords.__init__(self, x, y, apple_image, canvas)
 
