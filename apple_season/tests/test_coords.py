@@ -1,25 +1,15 @@
+# these tests will most likely fail if run, because my code has changed a lot since I wrote these
+
 import unittest
 from os.path import join, dirname
 import sys
 
-cwd = dirname(dirname(__file__))
+cwd = dirname(dirname(dirname(__file__)))
 if cwd not in sys.path:
     sys.path.append(cwd)
 
 from apple_season import coords
-
-
-with open(join(cwd, 'images/apple.txt'), 'r') as f:
-    apple_string = f.read()
-
-apple_grid = [list(row) for row in apple_string.split('\n')]
-
-chars = []
-for r, row in enumerate(apple_grid):
-    for x, char in enumerate(row):
-        chars.append(coords.Char(x, len(apple_grid) - 1 - r, char))
-
-apple_image = coords.Image(chars)
+from apple_season.apple import apple_image
 
 
 class TestCanvas(unittest.TestCase):
