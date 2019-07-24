@@ -1,11 +1,25 @@
+from platform import system
 import setuptools
+
+dependencies = ['playsound']
+
+system = system()
+
+if system == 'Darwin':
+    dependencies.append('PyObjC')
+elif system == 'Windows':
+    pass
+else:
+    dependencies.append('PyGObject')
+
+del system
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="Terminal-Apple-Season",
-    version="1.1.2",
+    version="1.1.3",
     author="Arin Khare",
     author_email="arinmkhare@gmail.com",
     description="Apple season game for terminal",
@@ -19,8 +33,5 @@ setuptools.setup(
         "Operating System :: MacOS :: MacOS X",
     ],
     include_package_data=True,
-    install_requires=[
-        'playsound',
-        'PyObjC'
-    ]
+    install_requires=dependencies
 )
