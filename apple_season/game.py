@@ -4,6 +4,7 @@ import random
 import time
 import curses
 import logging
+from playsound import playsound
 
 cwd = dirname(dirname(abspath(__file__)))
 if cwd not in sys.path:
@@ -71,7 +72,6 @@ def main(stdscr):
     stdscr.nodelay(True)
     stdscr.leaveok(True)
     key=""
-    stdscr.clear()
 
     while True:
         stdscr.clear()
@@ -105,6 +105,8 @@ and start again in larger window.')
                return False
          return True
 
+    stdscr.clear()
+
     while not finished_apples():
 
         if len(apples) <= 100:  # don't make more if there are already 100
@@ -112,8 +114,6 @@ and start again in larger window.')
             num = random.randint(0, 50)
             if num == 25:
                 apples.append(Apple(canvas, basket))
-
-        stdscr.clear()
 
         try:
             key = stdscr.getkey()
@@ -139,7 +139,8 @@ and start again in larger window.')
                 apple.render()
             else:
                 if apple.y == basket.image.chars[0].y:
-                    apple.check_caught()
+                    if apple.check_caught():
+                        playsound(join(cwd, 'apple_season/caught.wav'), block=False)
                 apple.fall()
                 apple.render()
                 # attempt to make the apples red.
@@ -157,6 +158,7 @@ and start again in larger window.')
         basket.render()
 
         try:
+            stdscr.clear()
             stdscr.addstr(canvas.display)
             stdscr.addstr(f'\nsaved: {len([apple for apple in apples if apple.caught])}\
 \t\tmisssed: {len([apple for apple in apples if not apple.caught])}')
@@ -167,6 +169,7 @@ and start again in larger window.')
         stdscr.refresh()
         time.sleep(0.02)
         frame += 1
+
 
     caught_apples = len([apple for apple in apples if apple.caught])
 

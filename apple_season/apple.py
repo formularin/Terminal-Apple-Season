@@ -69,3 +69,6 @@ class Apple(Coords):
         if overlapping:
             self.caught = True
             self.end()
+            return True
+        else:
+            return False

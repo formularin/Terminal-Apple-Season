@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="Terminal-Apple-Season",
-    version="1.0.1",
+    version="1.1.2",
     author="Arin Khare",
     author_email="arinmkhare@gmail.com",
     description="Apple season game for terminal",
@@ -18,4 +18,9 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: MacOS :: MacOS X",
     ],
+    include_package_data=True,
+    install_requires=[
+        'playsound',
+        'PyObjC'
+    ]
 )
