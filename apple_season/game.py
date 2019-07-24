@@ -1,22 +1,18 @@
-from os.path import join, dirname, abspath
-import sys
-import random
-import time
 import curses
-import logging
+from os.path import abspath, dirname, join
+import random
+import sys
+import time
+
 from playsound import playsound
 
 cwd = dirname(dirname(abspath(__file__)))
 if cwd not in sys.path:
     sys.path.append(cwd)
 
+from apple_season.apple import Apple
 from apple_season.basket import Basket
-from apple_season.apple import Apple, apple_string
 from apple_season.coords import Canvas, Coords, Image
-
-
-# logging.basicConfig(filename='apple.log', level=logging.DEBUG,
-#                     format='%(asctime)s: %(levelname)s: %(message)s')
 
 
 title_screen = """     ___      _____    _____            _______
@@ -42,13 +38,15 @@ _____| |______ /         \ _____| |_____| |   \|
 
 
 def game_over(stdscr, caught_apples):
+    """Contains mainloop for game over screen."""
 
     missed_apples = 100 - caught_apples
 
-    while True:
-        stdscr.clear()
-        stdscr.addstr(f'GAME OVER\nTotal: 100\nMissed: {missed_apples}\n__________\n\
+    stdscr.clear()
+    stdscr.addstr(f'GAME OVER\n\nTotal: 100\nMissed: {missed_apples}\n----------\n\
 Saves: {caught_apples}\n\n\nPress "q" to quit\nPress "a" to play again.')
+
+    while True:
         try:
             key = stdscr.getkey()
             if str(key) == "q":
@@ -56,40 +54,46 @@ Saves: {caught_apples}\n\n\nPress "q" to quit\nPress "a" to play again.')
             if str(key) == "a":
                 curses.wrapper(main)
                 return
-        except Exception:
+        except Exception:  # no input
             pass
 
 
 def main(stdscr):
+    """Contains mainloops for title screen and gameplay."""
 
+    # don't see cursor
     curses.curs_set(0)
-    dims = [curses.COLS - 1, curses.LINES - 1]  # pylint: disable=no-member
-    # logging.info(f'terminal dims - width: {curses.COLS - 1} and height: {curses.LINES - 1}') # pylint: disable=no-member
 
-    # apple color pair
-    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_RED)
+    # clear screen so it doesn't overflow
+    stdscr.clear()
 
-    stdscr.nodelay(True)
-    stdscr.leaveok(True)
-    key=""
+    screen_is_big_enough = False
+    try:
+        stdscr.addstr(title_screen)
+        screen_is_big_enough = True
 
-    while True:
+    except Exception:
+
         stdscr.clear()
-        try:
-            stdscr.addstr(title_screen)
-        except Exception:
-            stdscr.clear()
-            stdscr.addstr('Terminal window is too small. \n\
+        stdscr.addstr('Terminal window is too small. \n\
 Quit the program by pressing "q" \n\
 and start again in larger window.')
+
+    # make input non-blocking, and add initialize key variable
+    stdscr.nodelay(True)
+    key=""
+
+    while True: 
         try:
             key = stdscr.getkey()
             if str(key) == "q":
                 sys.exit()
-            break
+            if screen_is_big_enough:
+                break
         except Exception:
             pass
 
+    dims = [curses.COLS - 1, curses.LINES - 1]
     canvas = Canvas(*dims)
     basket = Basket(canvas)
 
@@ -97,28 +101,30 @@ and start again in larger window.')
     frame = 0
 
     def finished_apples():
-      if len(apples) <= 100:
-         return False
-      else:
-         for apple in apples:
-            if not apple.has_fallen:
-               return False
-         return True
+        """Checks to see if 100 apples have fallen."""
+        if len(apples) <= 100:
+            return False
+        else:
+            for apple in apples:
+                if not apple.has_fallen:
+                    return False
+                else:
+                    return True
 
     stdscr.clear()
 
     while not finished_apples():
 
         if len(apples) <= 100:  # don't make more if there are already 100
-            # decide whether or not to create new apple (1/50 chance per frame)
-            num = random.randint(0, 50)
-            if num == 25:
+            # decide whether or not to create new apple (1/25 chance per frame)
+            num = random.randint(0, 25)
+            if num == 10:
                 apples.append(Apple(canvas, basket))
 
         try:
+            # pick up keyboard inputs
             key = stdscr.getkey()
             
-            # pick up keyboard inputs
             # quit option
             if str(key) == "q":
                 return
@@ -135,29 +141,24 @@ and start again in larger window.')
             pass
 
         for apple in apples:
-            if apple.has_fallen:
-                apple.render()
-            else:
+            
+            if not apple.has_fallen:
+                
+                # if bottom of apple is on the same line as top of basket.
                 if apple.y == basket.image.chars[0].y:
+                    # play sound if apple caught
                     if apple.check_caught():
                         playsound(join(cwd, 'apple_season/caught.wav'), block=False)
+                
                 apple.fall()
-                apple.render()
-                # attempt to make the apples red.
-                # for char in apple.image.chars:
-                #     char_x = char.x + apple.x
-                #     char_y = canvas.height - 1 - (char.y + apple.y)
-                #     logging.debug(f'x: {char_x}')
-                #     logging.debug(f'y: {char_y}')
-                #     try:
-                #         stdscr.addstr(char_y, char_x, char.char, curses.color_pair(1))
-                #     except Exception:
-                #         pass
+
+            apple.render()
                 
         # render objects
         basket.render()
 
         try:
+            # update screen for current frame
             stdscr.clear()
             stdscr.addstr(canvas.display)
             stdscr.addstr(f'\nsaved: {len([apple for apple in apples if apple.caught])}\
@@ -170,11 +171,9 @@ and start again in larger window.')
         time.sleep(0.02)
         frame += 1
 
-
+    # display game over screen
     caught_apples = len([apple for apple in apples if apple.caught])
-
     curses.wrapper(game_over, caught_apples)
-    return
 
 
 curses.wrapper(main)

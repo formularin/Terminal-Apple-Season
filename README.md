@@ -1,6 +1,6 @@
 # Apple Season Terminal
 
-A terminal ASCII recreation of the original [Apple Season](http://www.ferryhalim.com/orisinal/g2/applegame.htm)
+A terminal ASCII recreation of the original [Apple Season](http://www.ferryhalim.com/orisinal/g2/applegame.htm) by Ferry Halim.
 
 ## Installation
 

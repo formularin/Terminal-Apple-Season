@@ -1,35 +1,38 @@
 from os.path import join, dirname
-import sys
 import random
+import sys
 
 cwd = dirname(dirname(__file__))
-
 if cwd not in sys.path:
     sys.path.append(cwd)
 
-from apple_season.coords import Coords, Image, Char
+from apple_season.coords import Char, Coords, Image
 
 
-apple_string = """  /
+APPLE_STRING = """  /
 / \\
 \_/"""
 
-apple_grid = [list(row) for row in apple_string.split('\n')]
-
+# create Char object for each character in APPLE_STRING
+apple_grid = [list(row) for row in APPLE_STRING.split('\n')]
 chars = []
 for r, row in enumerate(apple_grid):
     for x, char in enumerate(row):
         chars.append(Char(x, len(apple_grid) - 1 - r, char))
 
+# combine chars into Image object
 apple_image = Image(chars)
 
 
 class Apple(Coords):
+    """An Apple that you're supposed to catch with the basket."""
 
     def __init__(self, canvas, basket):
 
         self.basket = basket
 
+        # initialize apple at any point at the top of the screen
+        # between zero and 'press "q" to quit' text
         y = canvas.height
         x = random.randint(1, canvas.width - 21)
 
@@ -37,10 +40,13 @@ class Apple(Coords):
         self.caught = False
         self.frame = 0
 
+        # initialize as Coords object as well as Apple
         Coords.__init__(self, x, y, apple_image, canvas)
 
 
     def end(self):
+        """Turns image into a 3x3 grid of blank spaces
+        and changes has_fallen attribute to True"""
 
         new_grid = [[' ' for i in range(3)] for x in range(3)]
         new_image_chars = []
@@ -51,6 +57,7 @@ class Apple(Coords):
         self.has_fallen = True
 
     def fall(self):
+        """Moves apple down 1 line. Ends if apple has fallen"""
 
         self.previous_y = self.y
         self.y -= 1
@@ -59,6 +66,8 @@ class Apple(Coords):
             self.end()
 
     def check_caught(self):
+        """Checks to see if apple has been caught.
+        Returns Boolean and ends if caught"""
         
         # x values for basket and apple
         basket_char_coords = set([char.x + self.basket.x for char in self.basket.image.chars])
