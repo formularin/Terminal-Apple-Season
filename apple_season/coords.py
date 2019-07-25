@@ -1,47 +1,4 @@
-class Canvas:
-    """Canvas for displaying coords objects"""
-
-    def replace(self, x, y, char):
-        """Replaces a char with other char at certain location on canvas"""
-
-        if len(char) != 1:
-            raise ValueError('can only replace one char at a time')
-
-        self.grid[self.height - 1 - y][x] = char
-
-    def __init__(self, width, height):
-
-        self.width = width
-        self.height = height
-        
-        self.grid = [[' ' for x in range(self.width)] for y in range(self.height)]
-
-        for i, char in enumerate(reversed('press "q" to quit'), 1):
-            self.replace(self.width - i, self.height - 1, char)
-
-        
-    @property
-    def display(self):
-        """Returns string representation of current state"""
-        return '\n'.join([''.join(i) for i in self.grid])
-
-
-class Char:
-    """A single character that is part of an Image"""
-
-    def __init__(self, x, y, char):
-
-        self.x = x
-        self.y = y
-        self.char = char  # string
-
-
-class Image:
-    """A collection of chars that create an object in the game"""
-
-    def __init__(self, chars):
-
-        self.chars = chars
+from apple_season.assets import APPLE_IMAGES, Char, Image
 
 
 class Coords:
@@ -59,15 +16,27 @@ class Coords:
     def render(self):
         """Alter canvas to display coords object in its current position"""
 
+        previous_image = None
+
         # clear previous rendering on canvas
-        for char in self.image.chars:
-            
+        if str(type(self)) == "<class 'apple_season.apple.Apple'>":
+            if not self.has_fallen:
+                previous_image = APPLE_IMAGES[APPLE_IMAGES.index(self.image) - 1]
+            else:
+                previous_image = self.image
+        else:
+            previous_image = self.image
+
+        for char in previous_image.chars:
+
             # location of previous char on canvas
             canvas_x = char.x + self.previous_x
             canvas_y = char.y + self.previous_y
 
+            bg_char = self.canvas.background[self.canvas.height - 1 - canvas_y][canvas_x]
+
             try:
-                self.canvas.replace(canvas_x, canvas_y, ' ')
+                self.canvas.replace(canvas_x, canvas_y, bg_char)
             except IndexError:
                 pass
         

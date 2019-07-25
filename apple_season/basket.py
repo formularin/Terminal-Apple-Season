@@ -5,24 +5,8 @@ cwd = dirname(dirname(__file__))
 if cwd not in sys.path:
     sys.path.append(cwd)
 
-from apple_season.coords import Char, Coords, Image
-
-
-BASKET_STRING = """\------------------/
- \                /
-  \              /
-   \____________/"""
-
-basket_grid = [list(row) for row in BASKET_STRING.split('\n')]
-
-# create Char object for each character in BASKET_STRING
-chars = []
-for r, row in enumerate(basket_grid):
-    for x, char in enumerate(row):
-        chars.append(Char(x, len(basket_grid) - 1 - r, char))
-
-# combine chars into Image object
-basket_image = Image(chars)
+from apple_season.coords import Coords
+from apple_season.assets import BASKET_IMAGE, Char, Image
 
 
 class Basket(Coords):
@@ -31,7 +15,7 @@ class Basket(Coords):
     def __init__(self, canvas):
 
         # initialize as Coords object as well as Basket
-        Coords.__init__(self, int(canvas.width / 2), 1, basket_image, canvas)
+        Coords.__init__(self, int(canvas.width / 2), 2, BASKET_IMAGE, canvas)
 
 
     def move(self, direction):

@@ -11,30 +11,9 @@ if cwd not in sys.path:
     sys.path.append(cwd)
 
 from apple_season.apple import Apple
+from apple_season.assets import Canvas, Image, TITLE_SCREEN
 from apple_season.basket import Basket
-from apple_season.coords import Canvas, Coords, Image
-
-
-title_screen = """     ___      _____    _____            _______
-    /   \    |     |  |     | |        |
-   /_____\   |_____|  |_____| |        |____
-  /       \  |        |       |        |
- /         \ |        |       |_______ |_______
- ____   ______     ___     _____   _____
-|      |          /   \   |       |     | |\   |
-|____  |____     /_____\  |_____  |     | | \  |
-     | |        /       \       | |     | |  \ |
-_____| |______ /         \ _____| |_____| |   \|
-
-           ___        ______                               
-           \  \      /     /                       
-            \__\____/     / Press any key to start.
-               /   /_____/  If nothing happens, raise an issue on     
-              | O        |  https://github.com/lol-cubes/Terminal-Apple-Season/issues
-              |          |
-              |          |       
-               \________/                         
-                                                  """
+from apple_season.coords import Coords
 
 
 def game_over(stdscr, caught_apples):
@@ -69,7 +48,7 @@ def main(stdscr):
 
     screen_is_big_enough = False
     try:
-        stdscr.addstr(title_screen)
+        stdscr.addstr(TITLE_SCREEN)
         screen_is_big_enough = True
 
     except Exception:
@@ -98,7 +77,6 @@ and start again in larger window.')
     basket = Basket(canvas)
 
     apples = []
-    frame = 0
 
     def finished_apples():
         """Checks to see if 100 apples have fallen."""
@@ -159,6 +137,10 @@ and start again in larger window.')
 
         try:
             # update screen for current frame
+
+            for i, char in enumerate(canvas.grid[-1]):
+                canvas.replace(i, 1, '-')
+
             stdscr.clear()
             stdscr.addstr(canvas.display)
             stdscr.addstr(f'\nsaved: {len([apple for apple in apples if apple.caught])}\
@@ -169,7 +151,6 @@ and start again in larger window.')
 
         stdscr.refresh()
         time.sleep(0.02)
-        frame += 1
 
     # display game over screen
     caught_apples = len([apple for apple in apples if apple.caught])

@@ -6,22 +6,8 @@ cwd = dirname(dirname(__file__))
 if cwd not in sys.path:
     sys.path.append(cwd)
 
-from apple_season.coords import Char, Coords, Image
-
-
-APPLE_STRING = """  /
-/ \\
-\_/"""
-
-# create Char object for each character in APPLE_STRING
-apple_grid = [list(row) for row in APPLE_STRING.split('\n')]
-chars = []
-for r, row in enumerate(apple_grid):
-    for x, char in enumerate(row):
-        chars.append(Char(x, len(apple_grid) - 1 - r, char))
-
-# combine chars into Image object
-apple_image = Image(chars)
+from apple_season.coords import Coords
+from apple_season.assets import APPLE_IMAGES, Char, Image
 
 
 class Apple(Coords):
@@ -33,7 +19,7 @@ class Apple(Coords):
 
         # initialize apple at any point at the top of the screen
         # between zero and 'press "q" to quit' text
-        y = canvas.height
+        y = canvas.height - 2
         x = random.randint(1, canvas.width - 21)
 
         self.has_fallen = False
@@ -41,7 +27,7 @@ class Apple(Coords):
         self.frame = 0
 
         # initialize as Coords object as well as Apple
-        Coords.__init__(self, x, y, apple_image, canvas)
+        Coords.__init__(self, x, y, APPLE_IMAGES[0], canvas)
 
 
     def end(self):
@@ -61,6 +47,13 @@ class Apple(Coords):
 
         self.previous_y = self.y
         self.y -= 1
+
+        if not self.has_fallen:
+            # change image to rotate apple
+            new_index = APPLE_IMAGES.index(self.image) + 1
+            if new_index == 4:
+                new_index = 0
+            self.image = APPLE_IMAGES[new_index]
 
         if self.y <= 0:
             self.end()
