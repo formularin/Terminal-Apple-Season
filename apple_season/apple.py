@@ -20,7 +20,7 @@ class Apple(Coords):
         # initialize apple at any point at the top of the screen
         # between zero and 'press "q" to quit' text
         y = canvas.height - 2
-        x = random.randint(1, canvas.width - 21)
+        x = random.randint(1, canvas.width - 3)
 
         self.has_fallen = False
         self.caught = False
@@ -42,18 +42,21 @@ class Apple(Coords):
         self.image = Image(new_image_chars)
         self.has_fallen = True
 
-    def fall(self):
-        """Moves apple down 1 line. Ends if apple has fallen"""
+    def fall(self, rotate):
+        """Moves apple down 1 line.
+        Rotates apple if rotate argument is True.
+        Ends if apple has fallen."""
 
         self.previous_y = self.y
         self.y -= 1
 
         if not self.has_fallen:
-            # change image to rotate apple
-            new_index = APPLE_IMAGES.index(self.image) + 1
-            if new_index == 4:
-                new_index = 0
-            self.image = APPLE_IMAGES[new_index]
+            if rotate:
+                # change image to rotate apple
+                new_index = APPLE_IMAGES.index(self.image) + 1
+                if new_index == 4:
+                    new_index = 0
+                self.image = APPLE_IMAGES[new_index]
 
         if self.y <= 0:
             self.end()

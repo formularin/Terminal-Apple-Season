@@ -90,6 +90,8 @@ and start again in larger window.')
                     return True
 
     stdscr.clear()
+    
+    frame = 0
 
     while not finished_apples():
 
@@ -128,9 +130,16 @@ and start again in larger window.')
                     if apple.check_caught():
                         playsound(join(cwd, 'apple_season/caught.wav'), block=False)
                 
-                apple.fall()
+                rotate = False
+                if '.0' in str(frame / 2):
+                    rotate = True
+                    
+                apple.fall(rotate)
 
-            apple.render()
+            if '.0' in str(frame / 2):
+                apple.render(True)
+            else:
+                apple.render()
                 
         # render objects
         basket.render()
@@ -151,6 +160,7 @@ and start again in larger window.')
 
         stdscr.refresh()
         time.sleep(0.02)
+        frame += 1
 
     # display game over screen
     caught_apples = len([apple for apple in apples if apple.caught])

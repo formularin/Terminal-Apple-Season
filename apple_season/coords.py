@@ -13,19 +13,16 @@ class Coords:
         self.previous_x = self.x
         self.previous_y = self.y
 
-    def render(self):
+    def render(self, image_has_rotated=False):
         """Alter canvas to display coords object in its current position"""
 
-        previous_image = None
+        previous_image = self.image
 
         # clear previous rendering on canvas
         if str(type(self)) == "<class 'apple_season.apple.Apple'>":
             if not self.has_fallen:
-                previous_image = APPLE_IMAGES[APPLE_IMAGES.index(self.image) - 1]
-            else:
-                previous_image = self.image
-        else:
-            previous_image = self.image
+                if image_has_rotated:
+                    previous_image = APPLE_IMAGES[APPLE_IMAGES.index(self.image) - 1]
 
         for char in previous_image.chars:
 
