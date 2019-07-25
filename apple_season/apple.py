@@ -1,3 +1,4 @@
+from copy import copy
 from os.path import join, dirname
 import random
 import sys
@@ -34,7 +35,7 @@ class Apple(Coords):
         """Turns image into a 3x3 grid of blank spaces
         and changes has_fallen attribute to True"""
 
-        new_grid = [[' ' for i in range(3)] for x in range(3)]
+        new_grid = [[' ' for i in range(5)] for x in range(5)]
         new_image_chars = []
         for r, row in enumerate(new_grid):
             for x, char in enumerate(row):

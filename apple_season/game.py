@@ -129,10 +129,12 @@ and start again in larger window.')
                     # play sound if apple caught
                     if apple.check_caught():
                         playsound(join(cwd, 'apple_season/caught.wav'), block=False)
+                        apple.render()
                 
-                rotate = False
-                if '.0' in str(frame / 2):
-                    rotate = True
+                if not apple.has_fallen:
+                    rotate = False
+                    if '.0' in str(frame / 2):
+                        rotate = True
                     
                 apple.fall(rotate)
 

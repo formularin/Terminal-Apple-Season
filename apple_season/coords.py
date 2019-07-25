@@ -30,9 +30,8 @@ class Coords:
             canvas_x = char.x + self.previous_x
             canvas_y = char.y + self.previous_y
 
-            bg_char = self.canvas.background[self.canvas.height - 1 - canvas_y][canvas_x]
-
             try:
+                bg_char = self.canvas.background[self.canvas.height - 1 - canvas_y][canvas_x]
                 self.canvas.replace(canvas_x, canvas_y, bg_char)
             except IndexError:
                 pass
