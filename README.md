@@ -28,4 +28,4 @@ Use the arrow keys to move the basket from side to side. Try to catch as many of
 
 ## OS Compatability
 
-Terminal-Apple-Season has been tested on OS X. It currently is not compatible with windows. It should work but has not been tested on Linux.
+Terminal-Apple-Season has been tested on OS X and Windows. It should work but has not been tested on Linux.
