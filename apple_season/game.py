@@ -154,7 +154,8 @@ def main(stdscr):
             stdscr.addstr(canvas.display)
             stdscr.addstr(COUNTER % (
                 len([apple for apple in apples if apple.caught]),
-                len([apple for apple in apples if not apple.caught])))
+                len([apple for apple in apples if not (apple.caught and apple.has_fallen)]))
+                )
             
         except Exception:
             pass
