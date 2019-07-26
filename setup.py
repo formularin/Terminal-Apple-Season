@@ -8,7 +8,7 @@ system = system()
 if system == 'Darwin':
     dependencies.append('PyObjC')
 elif system == 'Windows':
-    pass
+    dependencies.append('windows-curses')
 else:
     dependencies.append('PyGObject')
 
