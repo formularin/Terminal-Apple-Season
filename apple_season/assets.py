@@ -103,3 +103,23 @@ _____| |______ /         \ _____| |_____| |   \|
               |          |       
                \________/                         
                                                   """
+
+GAME_OVER_SCREEN = """GAME OVER
+
+Total: 100
+Missed: %s
+----------
+Saves: %s
+
+
+Press "q" to quit
+Press "a" to play again."""
+
+
+SMALL_WINDOW_MESSAGE = """Terminal window is too small.
+Quit the program by pressing "q"
+and start again in larger window."""
+
+
+COUNTER = """
+saved: %s\t\tmisssed: %s"""

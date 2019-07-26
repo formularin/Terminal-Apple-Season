@@ -11,7 +11,8 @@ if cwd not in sys.path:
     sys.path.append(cwd)
 
 from apple_season.apple import Apple
-from apple_season.assets import Canvas, Image, TITLE_SCREEN
+from apple_season.assets import (Canvas, Image,
+    TITLE_SCREEN, GAME_OVER_SCREEN, SMALL_WINDOW_MESSAGE, COUNTER)
 from apple_season.basket import Basket
 from apple_season.coords import Coords
 
@@ -22,8 +23,7 @@ def game_over(stdscr, caught_apples):
     missed_apples = 100 - caught_apples
 
     stdscr.clear()
-    stdscr.addstr(f'GAME OVER\n\nTotal: 100\nMissed: {missed_apples}\n----------\n\
-Saves: {caught_apples}\n\n\nPress "q" to quit\nPress "a" to play again.')
+    stdscr.addstr(GAME_OVER_SCREEN % (missed_apple, caught_apples))
 
     while True:
         try:
@@ -54,9 +54,7 @@ def main(stdscr):
     except Exception:
 
         stdscr.clear()
-        stdscr.addstr('Terminal window is too small. \n\
-Quit the program by pressing "q" \n\
-and start again in larger window.')
+        stdscr.addstr(SMALL_WINDOW_MESSAGE)
 
     # make input non-blocking, and add initialize key variable
     stdscr.nodelay(True)
@@ -154,8 +152,9 @@ and start again in larger window.')
 
             stdscr.clear()
             stdscr.addstr(canvas.display)
-            stdscr.addstr(f'\nsaved: {len([apple for apple in apples if apple.caught])}\
-\t\tmisssed: {len([apple for apple in apples if not apple.caught])}')
+            stdscr.addstr(COUNTER % (
+                len([apple for apple in apples if apple.caught]),
+                len([apple for apple in apples if not apple.caught])))
             
         except Exception:
             pass
