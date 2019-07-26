@@ -23,7 +23,7 @@ def game_over(stdscr, caught_apples):
     missed_apples = 100 - caught_apples
 
     stdscr.clear()
-    stdscr.addstr(GAME_OVER_SCREEN % (missed_apple, caught_apples))
+    stdscr.addstr(GAME_OVER_SCREEN % (missed_apples, caught_apples))
 
     while True:
         try:
